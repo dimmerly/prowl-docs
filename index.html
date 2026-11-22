@@ -34,7 +34,6 @@
   }
 
   * { box-sizing: border-box; }
-  html { scroll-padding-top: calc(var(--nav-h) + 1rem); }
   body { margin: 0; background: var(--c-primary); color: #fff; font-family: var(--font); -webkit-font-smoothing: antialiased; }
   a { color: inherit; text-decoration: none; }
   button { font: inherit; color: inherit; }
@@ -751,7 +750,9 @@
     if (!el) el = main.querySelector(`.member[data-name="${CSS.escape(a)}"]`);
     if (!el) return;
     if (el.classList.contains('inherited') && main.querySelector('.hide-inherited')) setInherited(true);
+    spyPinned = el; // keep this entry selected until the user scrolls themselves
     el.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+    onScroll();
     if (el.classList.contains('member')) { el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1400); }
   }
 
@@ -1204,7 +1205,10 @@
   // ---------------------------------------------------------------------------
   // TOC scroll spy + code copy
   // ---------------------------------------------------------------------------
-  let spyTargets = [], spyLinks = [];
+  let spyTargets = [], spyLinks = [], spyPinned = null;
+  // A TOC click pins its target; any manual scroll input releases it.
+  for (const ev of ['wheel', 'touchmove', 'mousedown']) window.addEventListener(ev, () => { spyPinned = null; }, { passive: true });
+  window.addEventListener('keydown', e => { if (/^(Arrow|Page|Home|End| )/.test(e.key)) spyPinned = null; });
   function setupScrollSpy() {
     spyLinks = [...main.querySelectorAll('.toc a[data-target]')];
     spyTargets = spyLinks.map(a => document.getElementById(a.dataset.target));
@@ -1218,13 +1222,17 @@
       ticking = false;
       if (!spyLinks.length) return;
       const navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) * 16 || 64;
-      let active = -1;
-      for (let i = 0; i < spyTargets.length; i++) {
-        const el = spyTargets[i];
-        if (!el || el.offsetParent === null) continue;
-        if (el.getBoundingClientRect().top - navH - 32 <= 0) active = i; else break;
+      // A heading counts as current once it reaches the top quarter of the content area.
+      const line = navH + Math.max(96, (innerHeight - navH) * 0.25);
+      let active = spyPinned ? spyTargets.indexOf(spyPinned) : -1;
+      if (active < 0) {
+        for (let i = 0; i < spyTargets.length; i++) {
+          const el = spyTargets[i];
+          if (!el || el.offsetParent === null) continue;
+          if (el.getBoundingClientRect().top <= line) active = i; else break;
+        }
+        if (active < 0) active = spyTargets.findIndex(el => el && el.offsetParent !== null);
       }
-      if (active < 0) active = spyTargets.findIndex(el => el && el.offsetParent !== null);
       spyLinks.forEach((a, i) => a.classList.toggle('active', i === active));
       const a = spyLinks[active], nav = a?.closest('nav');
       if (a && nav && nav.scrollHeight > nav.clientHeight) {
