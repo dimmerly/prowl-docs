@@ -12,7 +12,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/glsl.min.js"></script>
 <style>
   :root {
-    --nav-h: 4rem;
+    --nav-h: 3.5rem;
     --c-primary: #191919;
     --c-secondary: #18181b;
     --c-tertiary: #0d0d0e;
@@ -148,9 +148,10 @@
   .page { display: flex; justify-content: center; gap: 2.5rem; padding: 3.5rem 2.5rem; }
   .page article { width: 100%; max-width: 48rem; min-width: 0; }
   .page.wide article { max-width: 58rem; }
-  .crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: var(--slate-500); margin-bottom: 1rem; }
+  .crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; font-size: 0.8rem; line-height: 1rem; color: var(--slate-500); margin-bottom: 1rem; }
   .crumbs a:hover { color: var(--accent-300); }
-  .crumbs i { font-size: 0.55rem; }
+  /* Optical centre: nudge the chevron down to the text's x-height middle. */
+  .crumbs i { font-size: 0.55rem; line-height: 1; transform: translateY(0.08rem); }
   .page-head { margin-bottom: 2.5rem; }
   .page-head h1 { font-size: 2.25rem; line-height: 1.15; font-weight: 800; margin: 0 0 0.75rem; letter-spacing: -0.02em; overflow-wrap: anywhere; }
   .page-head .lede { color: var(--slate-400); line-height: 1.65; margin: 0; }
