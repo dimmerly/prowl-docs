@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Prowl Documentation</title>
 <meta name="description" content="Guides, tutorials and API reference for the Prowl engine and the Anthology libraries.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20282%20264'%3E%3Cpath%20fill%3D'%2360a5fa'%20fill-rule%3D'evenodd'%20d%3D'M57.42%20129.10L49.91%20135.67L44.54%20141.57L41.43%20148.19L52.85%20149.26L40.80%20161.06L40.59%20173.71L59.87%20170.61L47.56%20179.93L107.61%20208.14L109.47%20211.44L110.91%20221.32L111.56%20223.19L113.12%20224.27L122.93%20225.66L128.85%20224.82L132.56%20223.38L135.57%20220.82L136.45%20219.04L136.18%20215.19L125.92%20202.99L125.62%20199.08L125.83%20197.10L127.60%20196.69L141.00%20196.67L154.40%20196.69L156.17%20197.10L156.38%20199.08L156.08%20202.99L145.82%20215.19L145.55%20219.04L146.43%20220.82L149.44%20223.38L153.15%20224.82L159.07%20225.66L168.88%20224.27L170.44%20223.19L171.09%20221.32L172.53%20211.44L174.39%20208.14L234.44%20179.93L222.13%20170.61L241.41%20173.71L241.20%20161.06L229.15%20149.26L240.57%20148.19L237.46%20141.57L232.09%20135.67L224.58%20129.10L188.99%20101.87L226.40%2071.84L226.40%20108.30L241.11%20118.18L241.11%2038.31L156.22%20107.66L156.43%2082.78L141.00%2082.87L125.57%2082.78L125.78%20107.66L40.89%2038.31L40.89%20118.18L55.60%20108.30L55.60%2071.84L93.01%20101.87Z%20M164.49%20165.29L168.64%20156.32L173.66%20150.20L181.57%20144.25L190.65%20140.28L200.32%20138.13L210.17%20136.98L214.10%20137.30L213.77%20145.15L211.06%20154.68L206.47%20163.45L201.46%20169.59L195.30%20174.56L188.10%20177.85L174.27%20178.47L168.90%20180.79L162.91%20188.72L161.92%20184.91L162.01%20180.95Z%20M93.90%20177.85L86.70%20174.56L80.54%20169.59L75.53%20163.45L70.94%20154.68L68.23%20145.15L67.90%20137.30L71.83%20136.98L81.68%20138.13L91.35%20140.28L100.43%20144.25L108.34%20150.20L113.36%20156.32L117.51%20165.29L119.99%20180.95L120.08%20184.91L119.09%20188.72L113.10%20180.79L107.73%20178.47Z%20M179.06%20122.41L157.60%20139.10L156.85%20125.89L171.41%20114.02Z%20M125.15%20125.89L124.40%20139.10L102.94%20122.41L110.59%20114.02Z'%2F%3E%3C%2Fsvg%3E">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/primeicons@7.0.0/primeicons.css">
 <script src="https://cdn.jsdelivr.net/npm/marked@15.0.12/marked.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
@@ -46,12 +47,13 @@
     background: rgba(25, 25, 25, 0.92); backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--line);
   }
-  .brand { display: flex; align-items: center; gap: 0.6rem; font-weight: 800; letter-spacing: -0.01em; font-size: 1.05rem; }
-  .brand-mark {
-    width: 2rem; height: 2rem; border-radius: 0.6rem; display: grid; place-items: center;
-    background: rgba(var(--accent-500), 0.15); border: 1px solid rgba(var(--accent-500), 0.35); color: var(--accent-400);
-  }
-  .brand small { font-weight: 500; color: var(--slate-400); font-size: 0.85rem; }
+  .brand { display: flex; align-items: center; gap: 0.75rem; font-size: 1.1rem; line-height: 1; white-space: nowrap; }
+  .brand-logo { width: 1.9rem; height: auto; color: #fff; flex: none; margin-right: -0.25rem; transition: color .15s; }
+  .brand:hover .brand-logo { color: var(--accent-300); }
+  .brand-name { font-weight: 700; letter-spacing: 0.01em; color: #fff; }
+  .brand-sep { width: 1px; height: 1.1rem; background: var(--line-2); }
+  .brand-sub { font-weight: 500; color: var(--slate-400); transition: color .15s; }
+  .brand:hover .brand-sub { color: var(--accent-300); }
   .navlinks { display: flex; align-items: stretch; gap: 0.25rem; height: 100%; }
   .navlinks a {
     display: flex; align-items: center; gap: 0.45rem; padding: 0 0.85rem; font-size: 0.9rem; font-weight: 500;
@@ -334,7 +336,7 @@
   /* ---------- Mobile ---------- */
   @media (max-width: 767px) {
     .topnav { gap: 0.75rem; padding: 0 1rem; }
-    .brand small, .nav-right .label { display: none; }
+    .brand-sep, .brand-sub, .nav-right .label { display: none; }
     .navlinks a { padding: 0 0.5rem; font-size: 0.85rem; }
     .navlinks a i { display: none; }
     .shell { flex-direction: column; }
@@ -356,7 +358,7 @@
 <body>
 
 <header class="topnav">
-  <a class="brand" href="#/"><span class="brand-mark"><i class="pi pi-book"></i></span>Prowl <small>Docs</small></a>
+  <a class="brand" href="#/" aria-label="Prowl Docs home"><svg class="brand-logo" viewBox="0 0 282 264" aria-hidden="true"><!-- Prowl logo, from Prowl.Editor EditorIcons.cs (MIT) --><path fill="currentColor" fill-rule="evenodd" d="M57.42 129.10L49.91 135.67L44.54 141.57L41.43 148.19L52.85 149.26L40.80 161.06L40.59 173.71L59.87 170.61L47.56 179.93L107.61 208.14L109.47 211.44L110.91 221.32L111.56 223.19L113.12 224.27L122.93 225.66L128.85 224.82L132.56 223.38L135.57 220.82L136.45 219.04L136.18 215.19L125.92 202.99L125.62 199.08L125.83 197.10L127.60 196.69L141.00 196.67L154.40 196.69L156.17 197.10L156.38 199.08L156.08 202.99L145.82 215.19L145.55 219.04L146.43 220.82L149.44 223.38L153.15 224.82L159.07 225.66L168.88 224.27L170.44 223.19L171.09 221.32L172.53 211.44L174.39 208.14L234.44 179.93L222.13 170.61L241.41 173.71L241.20 161.06L229.15 149.26L240.57 148.19L237.46 141.57L232.09 135.67L224.58 129.10L188.99 101.87L226.40 71.84L226.40 108.30L241.11 118.18L241.11 38.31L156.22 107.66L156.43 82.78L141.00 82.87L125.57 82.78L125.78 107.66L40.89 38.31L40.89 118.18L55.60 108.30L55.60 71.84L93.01 101.87Z M164.49 165.29L168.64 156.32L173.66 150.20L181.57 144.25L190.65 140.28L200.32 138.13L210.17 136.98L214.10 137.30L213.77 145.15L211.06 154.68L206.47 163.45L201.46 169.59L195.30 174.56L188.10 177.85L174.27 178.47L168.90 180.79L162.91 188.72L161.92 184.91L162.01 180.95Z M93.90 177.85L86.70 174.56L80.54 169.59L75.53 163.45L70.94 154.68L68.23 145.15L67.90 137.30L71.83 136.98L81.68 138.13L91.35 140.28L100.43 144.25L108.34 150.20L113.36 156.32L117.51 165.29L119.99 180.95L120.08 184.91L119.09 188.72L113.10 180.79L107.73 178.47Z M179.06 122.41L157.60 139.10L156.85 125.89L171.41 114.02Z M125.15 125.89L124.40 139.10L102.94 122.41L110.59 114.02Z"/></svg><span class="brand-name">Prowl</span><span class="brand-sep"></span><span class="brand-sub">Docs</span></a>
   <nav class="navlinks" id="navlinks"></nav>
   <div class="nav-right">
     <a class="icon-btn" id="gh-link" target="_blank" rel="noopener"><i class="pi pi-github"></i><span class="label">GitHub</span></a>
