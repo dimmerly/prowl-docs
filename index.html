@@ -210,9 +210,8 @@
     background: linear-gradient(90deg, #fff, #dbeafe); -webkit-background-clip: text; background-clip: text; color: transparent;
   }
   .home .lede { color: var(--slate-400); line-height: 1.65; max-width: 36rem; margin: 0 0 2.5rem; }
-  .related { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line-2); font-size: 0.875rem; }
+  .related { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.5rem; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line-2); font-size: 0.875rem; }
   .related .lbl { color: var(--slate-500); }
-  .related .dot { color: var(--slate-700); }
   .related a { color: var(--accent-400); transition: color .15s; }
   .related a:hover { color: var(--accent-300); }
 
@@ -758,7 +757,7 @@
 
   const page = (inner, toc = '', wide = false) => `<div class="page${wide ? ' wide' : ''}"><article>${inner}</article>${toc}</div>`;
   const loadingHtml = () => page('<div class="state loading"><i class="pi pi-spin pi-spinner" style="font-size:1.25rem"></i><span>Loading…</span></div>');
-  function setTitle(t) { document.title = t ? `${t} · ${SITE}` : SITE; }
+  function setTitle(t) { document.title = t ? `${t} | ${SITE}` : SITE; }
 
   function renderNotFound() {
     setTitle('Not found');
@@ -978,8 +977,8 @@
       <div class="cards">${cards}</div>
       ${news}
       <div class="related"><span class="lbl">Related:</span>
-        <a href="https://github.com/ProwlEngine/Prowl" target="_blank" rel="noopener">Prowl ↗</a><span class="dot">·</span>
-        <a href="https://github.com/ProwlEngine/Anthology" target="_blank" rel="noopener">Anthology ↗</a><span class="dot">·</span>
+        <a href="https://github.com/ProwlEngine/Prowl" target="_blank" rel="noopener">Prowl ↗</a>
+        <a href="https://github.com/ProwlEngine/Anthology" target="_blank" rel="noopener">Anthology ↗</a>
         <a href="${GH}" target="_blank" rel="noopener">Edit these docs ↗</a>
       </div>
     </div></div>`;
@@ -1046,11 +1045,11 @@
     const groups = new Map();
     for (const a of state.api.assemblies) { if (!groups.has(a.group)) groups.set(a.group, []); groups.get(a.group).push(a); }
     const total = state.apiList.length;
-    const commits = Object.entries(state.api.commits || {}).map(([k, v]) => `${esc(k)} <code>${esc(v)}</code>`).join(' · ');
+    const commits = Object.entries(state.api.commits || {}).map(([k, v]) => `${esc(k)} <code>${esc(v)}</code>`).join(', ');
     let html = `<header class="page-head"><h1>API reference</h1><p class="lede">${total.toLocaleString()} public types across ${state.api.assemblies.length} assemblies, generated from the source.${commits ? `<br><span style="font-size:.8rem;color:var(--slate-500)">Built from ${commits}</span>` : ''}</p></header>`;
     for (const [g, asms] of groups) {
       html += `<div class="section-title">${esc(g || 'Other')}</div><div class="cards">` + asms.map(a =>
-        `<a class="card" href="#/api/@${esc(a.name)}"><div class="t">${esc(a.name)}</div><p class="d">${a.typeCount} types · ${a.namespaces.length} namespace${a.namespaces.length === 1 ? '' : 's'}</p><i class="pi pi-arrow-right arrow"></i></a>`).join('') + '</div>';
+        `<a class="card" href="#/api/@${esc(a.name)}"><div class="t">${esc(a.name)}</div><p class="d">${a.typeCount} types, ${a.namespaces.length} namespace${a.namespaces.length === 1 ? '' : 's'}</p><i class="pi pi-arrow-right arrow"></i></a>`).join('') + '</div>';
     }
     main.innerHTML = page(html, '', true);
   }
@@ -1061,7 +1060,7 @@
     setTitle(name);
     state.open.set('a:' + name, true);
     let html = `<div class="crumbs"><a href="#/api">API</a><i class="pi pi-chevron-right"></i><span>${esc(a.group)}</span></div>`
-      + `<header class="page-head"><h1>${esc(a.name)}</h1><p class="lede">${a.typeCount} types${a.repo ? ` · <a class="text-link" href="https://github.com/${esc(a.repo)}" target="_blank" rel="noopener">${esc(a.repo)} ↗</a>` : ''}</p></header>`;
+      + `<header class="page-head"><h1>${esc(a.name)}</h1><p class="lede">${a.typeCount} types${a.repo ? ` from <a class="text-link" href="https://github.com/${esc(a.repo)}" target="_blank" rel="noopener">${esc(a.repo)} ↗</a>` : ''}</p></header>`;
     const toc = [];
     for (const ns of a.namespaces) {
       const id = 'ns-' + slugify(ns.name);
@@ -1174,7 +1173,7 @@
   function newsCard(n) {
     const cover = newsCover(n);
     return `<a class="card news-card" href="#/news/${esc(n.slug)}">${cover ? `<div class="cover" style="background-image:url('${esc(cover)}')"></div>` : ''}`
-      + `<div class="body"><div class="t">${esc(n.title)}</div><p class="d">${esc(n.summary || '')}</p><div class="meta">${fmtDate(n.date)}${n.author ? ' · ' + esc(n.author) : ''}</div></div></a>`;
+      + `<div class="body"><div class="t">${esc(n.title)}</div><p class="d">${esc(n.summary || '')}</p><div class="meta">${fmtDate(n.date)}${n.author ? ' by ' + esc(n.author) : ''}</div></div></a>`;
   }
   async function renderNews(slug, token) {
     if (!state.docs.length) { main.innerHTML = loadingHtml(); await indexReady; }
